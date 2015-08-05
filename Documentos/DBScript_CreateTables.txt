@@ -1,0 +1,78 @@
+CREATE TABLE Partituras (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  sNome VARCHAR(45) NOT NULL,
+  tpVoz INTEGER UNSIGNED NOT NULL,
+  sPath VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE Enderecos (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  sRua VARCHAR(45) NOT NULL,
+  sBairro VARCHAR(45) NOT NULL,
+  sCidade VARCHAR(45) NOT NULL,
+  sCEP VARCHAR(10) NOT NULL,
+  sNumero VARCHAR(10) NULL,
+  sComplemento VARCHAR(255) NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE Cargos (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  sDescricao VARCHAR(45) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE Direcao (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Enderecos_id INTEGER UNSIGNED NOT NULL,
+  Cargos_id INTEGER UNSIGNED NOT NULL,
+  sNome VARCHAR(45) NOT NULL,
+  dtAniversario DATE NOT NULL,
+  nCartaoMembro VARCHAR(20) NOT NULL,
+  nTelefone VARCHAR(12) NULL,
+  dtInicio DATE NOT NULL,
+  dtFim DATE NULL,
+  bAtivo BOOL NOT NULL,
+  PRIMARY KEY(id),
+  INDEX Direcao_FKIndex1(Cargos_id),
+  INDEX Direcao_FKIndex2(Enderecos_id)
+);
+
+CREATE TABLE Componentes (
+  iMatricula INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Enderecos_id INTEGER UNSIGNED NOT NULL,
+  sNome VARCHAR(45) NOT NULL,
+  dtAniversario DATE NULL,
+  tpVoz INTEGER UNSIGNED NOT NULL,
+  nCartaoMembro VARCHAR(20) NULL,
+  nTelefone VARCHAR(12) NULL,
+  dtInicio DATE NOT NULL,
+  dtFim DATE NULL,
+  bAtivo BOOL NOT NULL,
+  PRIMARY KEY(iMatricula),
+  INDEX Componentes_FKIndex1(Enderecos_id)
+);
+
+CREATE TABLE TiposEventos (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  sDescricao VARCHAR(20) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE Eventos (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  TiposEventos_id INTEGER UNSIGNED NOT NULL,
+  dtEvento DATE NOT NULL,
+  PRIMARY KEY(id),
+  INDEX Eventos_FKIndex1(TiposEventos_id)
+);
+
+CREATE TABLE Presenca (
+  Componentes_iMatricula INTEGER UNSIGNED NOT NULL,
+  Eventos_id INTEGER UNSIGNED NOT NULL,
+  tpPresenca INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(Componentes_iMatricula, Eventos_id),
+  INDEX Componentes_has_Eventos_FKIndex1(Componentes_iMatricula),
+  INDEX Componentes_has_Eventos_FKIndex2(Eventos_id)
+);
